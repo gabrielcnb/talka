@@ -38,6 +38,12 @@ export default function RootLayout({
               >
                 Dictation
               </a>
+              <a
+                href="/pronunciation"
+                className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
+              >
+                Pronunciation
+              </a>
             </div>
           </div>
         </nav>

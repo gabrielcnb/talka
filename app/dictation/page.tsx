@@ -2,21 +2,34 @@
 
 import { useState, useCallback } from "react";
 import { sentences } from "@/data/sentences";
+import { useTTS } from "@/hooks/useTTS";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
+const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
 
 export default function DictationPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("A1");
+  const [selectedVoice, setSelectedVoice] = useState<string>("rex");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [showResult, setShowResult] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+
+  const { speak, stop, isPlaying, isLoading } = useTTS();
 
   const filtered = sentences.filter((s) => s.level === selectedLevel);
   const current = filtered[currentIndex];
 
+  const playSentence = useCallback(() => {
+    if (!current) return;
+    setHasPlayed(true);
+    speak(current.text, selectedVoice);
+  }, [current, selectedVoice, speak]);
+
   const checkAnswer = useCallback(() => {
     if (!current) return;
+    stop();
     setShowResult(true);
     const isCorrect =
       userInput.trim().toLowerCase() === current.text.toLowerCase();
@@ -24,19 +37,23 @@ export default function DictationPage() {
       correct: prev.correct + (isCorrect ? 1 : 0),
       total: prev.total + 1,
     }));
-  }, [current, userInput]);
+  }, [current, userInput, stop]);
 
   const nextSentence = useCallback(() => {
+    stop();
     setShowResult(false);
     setUserInput("");
+    setHasPlayed(false);
     setCurrentIndex((prev) => (prev + 1) % filtered.length);
-  }, [filtered.length]);
+  }, [filtered.length, stop]);
 
   const changeLevel = (level: string) => {
+    stop();
     setSelectedLevel(level);
     setCurrentIndex(0);
     setUserInput("");
     setShowResult(false);
+    setHasPlayed(false);
     setScore({ correct: 0, total: 0 });
   };
 
@@ -47,9 +64,9 @@ export default function DictationPage() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <h1 className="text-3xl font-bold">Dictation</h1>
+      <h1 className="text-3xl font-bold">Listening Dictation</h1>
       <p className="text-gray-600">
-        Read the sentence, hide it, then type it from memory.
+        Listen to the sentence and type what you hear.
       </p>
 
       <div className="flex gap-2 flex-wrap">
@@ -68,6 +85,27 @@ export default function DictationPage() {
         ))}
       </div>
 
+      <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-2">
+          <label htmlFor="voice-select" className="text-sm font-medium text-gray-700">
+            Voice:
+          </label>
+          <select
+            id="voice-select"
+            value={selectedVoice}
+            onChange={(e) => setSelectedVoice(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            {voices.map((voice) => (
+              <option key={voice} value={voice}>
+                {voice.charAt(0).toUpperCase() + voice.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <span className="text-xs text-gray-400">Speed: Normal (1x)</span>
+      </div>
+
       {score.total > 0 && (
         <p className="text-sm text-gray-500">
           Score: {score.correct}/{score.total}
@@ -80,18 +118,45 @@ export default function DictationPage() {
         </p>
 
         {!showResult && (
-          <details className="cursor-pointer">
-            <summary className="text-primary-600 font-medium">
-              Show sentence (read then hide)
-            </summary>
-            <p className="mt-2 text-lg text-gray-800">{current.text}</p>
-          </details>
+          <button
+            onClick={playSentence}
+            disabled={isLoading}
+            className={`w-full flex items-center justify-center gap-3 px-6 py-4 rounded-lg font-medium text-lg transition-colors ${
+              isPlaying
+                ? "bg-purple-100 border-2 border-purple-400 text-purple-700"
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            } disabled:opacity-50`}
+          >
+            {isLoading ? (
+              <>
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Loading...
+              </>
+            ) : isPlaying ? (
+              <>
+                <svg className="h-6 w-6 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
+                Playing...
+              </>
+            ) : (
+              <>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                {hasPlayed ? "Play Again" : "Play"}
+              </>
+            )}
+          </button>
         )}
 
         <textarea
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Type the sentence here..."
+          placeholder={hasPlayed ? "Type what you heard..." : "Click Play to listen first..."}
           className="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
           rows={3}
           disabled={showResult}

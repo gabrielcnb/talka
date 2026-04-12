@@ -11,7 +11,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <a
           href="/vocabulary"
           className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-lg transition-all"
@@ -46,8 +46,20 @@ export default function Home() {
             Dictation
           </h2>
           <p className="text-gray-600">
-            Practice listening and writing. Type what you hear to improve your
-            skills.
+            Listen to sentences and type what you hear. Real listening practice.
+          </p>
+        </a>
+
+        <a
+          href="/pronunciation"
+          className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-amber-400 hover:shadow-lg transition-all"
+        >
+          <h2 className="text-xl font-semibold text-amber-700 mb-2">
+            Pronunciation
+          </h2>
+          <p className="text-gray-600">
+            Listen to correct pronunciation, record yourself, and compare
+            word-by-word.
           </p>
         </a>
       </div>

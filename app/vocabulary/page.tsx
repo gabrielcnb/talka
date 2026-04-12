@@ -1,17 +1,117 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { vocabulary } from "@/data/vocabulary";
+import { useTTS } from "@/hooks/useTTS";
 
 const levels = ["All", "A1", "A2", "B1", "B2", "C1"] as const;
 
+function SpeakerIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className || "w-4 h-4"}
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  );
+}
+
+function SpinnerIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      className={`animate-spin ${className || "w-4 h-4"}`}
+    >
+      <circle cx="12" cy="12" r="10" strokeOpacity={0.25} />
+      <path d="M12 2a10 10 0 0 1 10 10" strokeOpacity={1} />
+    </svg>
+  );
+}
+
+type PlayingItem = { id: number; type: "word" | "example" } | null;
+
+function ListenButton({
+  text,
+  itemId,
+  itemType,
+  activeItem,
+  onPlay,
+}: {
+  text: string;
+  itemId: number;
+  itemType: "word" | "example";
+  activeItem: PlayingItem;
+  onPlay: (id: number, type: "word" | "example", text: string) => void;
+}) {
+  const isActive =
+    activeItem?.id === itemId && activeItem?.type === itemType;
+  const { isPlaying, isLoading } = useTTS();
+
+  const isThisPlaying = isActive && isPlaying;
+  const isThisLoading = isActive && isLoading;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onPlay(itemId, itemType, text)}
+      className={`inline-flex items-center justify-center rounded-full p-1 transition-colors ${
+        isThisPlaying
+          ? "text-primary-600 bg-primary-50"
+          : isThisLoading
+          ? "text-amber-500 bg-amber-50"
+          : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+      }`}
+      title={`Listen to ${itemType}`}
+    >
+      {isThisLoading ? (
+        <SpinnerIcon className="w-4 h-4" />
+      ) : (
+        <SpeakerIcon className="w-4 h-4" />
+      )}
+    </button>
+  );
+}
+
 export default function VocabularyPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
+  const [activeItem, setActiveItem] = useState<PlayingItem>(null);
+  const { speak, stop } = useTTS();
 
   const filtered =
     selectedLevel === "All"
       ? vocabulary
       : vocabulary.filter((w) => w.level === selectedLevel);
+
+  const handlePlay = useCallback(
+    (id: number, type: "word" | "example", text: string) => {
+      if (activeItem?.id === id && activeItem?.type === type) {
+        stop();
+        setActiveItem(null);
+        return;
+      }
+      stop();
+      setActiveItem({ id, type });
+      speak(text).finally(() => {
+        setActiveItem((prev) =>
+          prev?.id === id && prev?.type === type ? null : prev
+        );
+      });
+    },
+    [activeItem, speak, stop]
+  );
 
   return (
     <div className="space-y-6">
@@ -41,10 +141,17 @@ export default function VocabularyPage() {
             key={word.id}
             className="bg-white rounded-lg border border-gray-200 p-4 space-y-2"
           >
-            <div className="flex items-baseline gap-3">
+            <div className="flex items-center gap-3">
               <span className="text-lg font-semibold text-gray-900">
                 {word.word}
               </span>
+              <ListenButton
+                text={word.word}
+                itemId={word.id}
+                itemType="word"
+                activeItem={activeItem}
+                onPlay={handlePlay}
+              />
               <span className="text-sm text-gray-500">{word.phonetic}</span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-primary-100 text-primary-700">
                 {word.partOfSpeech}
@@ -54,9 +161,18 @@ export default function VocabularyPage() {
               </span>
             </div>
             <p className="text-gray-700">{word.definition}</p>
-            <p className="text-sm text-gray-500 italic">
-              &quot;{word.example}&quot;
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-500 italic">
+                &quot;{word.example}&quot;
+              </p>
+              <ListenButton
+                text={word.example}
+                itemId={word.id}
+                itemType="example"
+                activeItem={activeItem}
+                onPlay={handlePlay}
+              />
+            </div>
           </div>
         ))}
       </div>
