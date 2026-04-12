@@ -16,6 +16,7 @@ export default function MobileMenu() {
     { href: "/dictation", label: t("nav_dictation") },
     { href: "/quiz", label: t("nav_quiz") },
     { href: "/pronunciation", label: t("nav_pronunciation") },
+    { href: "/flashcards", label: t("nav_flashcards") },
   ];
 
   return (

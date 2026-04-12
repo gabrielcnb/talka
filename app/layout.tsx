@@ -7,6 +7,7 @@ import LanguageSelector from "./components/LanguageSelector";
 import LanguageBadge from "./components/LanguageBadge";
 import ThemeToggle from "./components/ThemeToggle";
 import XPBar from "./components/XPBar";
+import LevelUpCelebration from "./components/LevelUpCelebration";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -80,6 +81,7 @@ export default function RootLayout({
           </div>
         </nav>
         <XPBar />
+        <LevelUpCelebration />
 
         <LanguageSelector />
 

@@ -106,7 +106,25 @@ export function useXP() {
 
   const addXP = useCallback((type: XPRewardType) => {
     const amount = XP_REWARDS[type];
-    setTotalXP((prev) => prev + amount);
+    setTotalXP((prev) => {
+      const newTotal = prev + amount;
+      const oldLevel = getLevelFromXP(prev);
+      const newLevel = getLevelFromXP(newTotal);
+
+      // Dispatch level-up event if level increased
+      if (newLevel > oldLevel && typeof window !== "undefined") {
+        const newLevelName = LEVEL_NAMES[newLevel - 1] || "Legend";
+        setTimeout(() => {
+          window.dispatchEvent(
+            new CustomEvent("voxify_level_up", {
+              detail: { newLevel, levelName: newLevelName },
+            })
+          );
+        }, 0);
+      }
+
+      return newTotal;
+    });
     // Dispatch event so XPBar can react
     if (typeof window !== "undefined") {
       window.dispatchEvent(
