@@ -18,8 +18,16 @@ export const metadata: Metadata = {
   },
   description:
     "AI-powered English learning: pronunciation practice, vocabulary, grammar, and dictation with speech recognition and text-to-speech.",
+  manifest: "/manifest.json",
+  themeColor: "#4f46e5",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Voxify",
+  },
   icons: {
     icon: "/favicon.svg",
+    apple: "/favicon.svg",
   },
   openGraph: {
     title: "Voxify - Master English with AI",
