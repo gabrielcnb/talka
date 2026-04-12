@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import {
   useNativeLanguage,
@@ -8,6 +8,7 @@ import {
   LANGUAGES,
 } from "@/app/components/LanguageSelector";
 import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
 import { useTranslation } from "@/app/i18n/useTranslation";
 
 type ConfirmingButton =
@@ -31,9 +32,32 @@ export default function SettingsPage() {
   const { t } = useTranslation();
   const { language, setLanguage, hydrated } = useNativeLanguage();
   const { level, totalXP, xpProgress, levelName } = useXP();
+  const { currentStreak } = useStreak();
   const [confirming, setConfirming] = useState<ConfirmingButton>(null);
   const [changingLang, setChangingLang] = useState(false);
   const [resetDone, setResetDone] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [canShare, setCanShare] = useState(false);
+
+  useEffect(() => {
+    setCanShare(typeof navigator !== "undefined" && !!navigator.share);
+  }, []);
+
+  const shareText = `I'm Level ${level} (${levelName}) on Voxify! ${totalXP} XP earned, ${currentStreak} day streak. Practice English with AI at https://voxify-sandy.vercel.app`;
+
+  const handleShare = useCallback(async () => {
+    if (canShare) {
+      try {
+        await navigator.share({ text: shareText });
+      } catch {
+        // User cancelled or share failed silently
+      }
+    } else {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [canShare, shareText]);
 
   const currentLang = language ? getLanguageByCode(language) : null;
 
@@ -218,6 +242,119 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Share Your Progress Section */}
+      <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-indigo-500"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Share Your Progress
+            </h2>
+          </div>
+        </div>
+        <div className="p-5 space-y-4">
+          {/* Preview card */}
+          <div className="relative rounded-lg border border-indigo-200 dark:border-indigo-800/50 bg-indigo-50/50 dark:bg-indigo-950/20 p-4">
+            <div className="absolute top-3 left-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="text-indigo-300 dark:text-indigo-700"
+              >
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+            </div>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed pl-5">
+              {shareText}
+            </p>
+          </div>
+
+          {/* Share / Copy button */}
+          <button
+            onClick={handleShare}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-white transition-all bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
+          >
+            {copied ? (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Copied!
+              </>
+            ) : canShare ? (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Share
+              </>
+            ) : (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Copy to clipboard
+              </>
+            )}
+          </button>
         </div>
       </section>
 
