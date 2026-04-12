@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import FeedbackAnimation from "@/app/components/FeedbackAnimation";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
 const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
@@ -17,6 +18,7 @@ export default function DictationPage() {
   const [showResult, setShowResult] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [feedback, setFeedback] = useState<{ show: boolean; type: "correct" | "wrong" }>({ show: false, type: "correct" });
 
   const { speak, stop, isPlaying, isLoading } = useTTS();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,6 +42,8 @@ export default function DictationPage() {
       correct: prev.correct + (isCorrect ? 1 : 0),
       total: prev.total + 1,
     }));
+    setFeedback({ show: true, type: isCorrect ? "correct" : "wrong" });
+    setTimeout(() => setFeedback((prev) => ({ ...prev, show: false })), 1600);
   }, [current, userInput, stop]);
 
   const nextSentence = useCallback(() => {
@@ -140,7 +144,8 @@ export default function DictationPage() {
         </p>
       )}
 
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+      <div className="relative bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+        <FeedbackAnimation show={feedback.show} type={feedback.type} />
         <p className="text-sm text-gray-500">
           Sentence {currentIndex + 1} of {filtered.length}
         </p>

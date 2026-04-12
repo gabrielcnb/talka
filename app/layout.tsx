@@ -6,6 +6,7 @@ import MobileMenu from "@/components/MobileMenu";
 import LanguageSelector from "./components/LanguageSelector";
 import LanguageBadge from "./components/LanguageBadge";
 import ThemeToggle from "./components/ThemeToggle";
+import XPBar from "./components/XPBar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -70,6 +71,7 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
+        <XPBar />
 
         <LanguageSelector />
 

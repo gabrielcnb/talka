@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import FeedbackAnimation from "@/app/components/FeedbackAnimation";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
 const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
@@ -42,6 +43,8 @@ export default function PronunciationPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState<string>("rex");
   const [totalScore, setTotalScore] = useState({ points: 0, attempts: 0 });
+  const [feedback, setFeedback] = useState<{ show: boolean; type: "correct" | "wrong" | "great" }>({ show: false, type: "correct" });
+  const feedbackShownRef = useRef(false);
 
   const { speak, stop, isPlaying, isLoading } = useTTS();
   const {
@@ -64,6 +67,20 @@ export default function PronunciationPage() {
     if (!hasFinished || !transcript || !current) return null;
     return computeSimilarity(current.text, transcript);
   }, [hasFinished, transcript, current]);
+
+  // Trigger feedback animation when result is available
+  useEffect(() => {
+    if (hasFinished && !isListening && result && !feedbackShownRef.current) {
+      feedbackShownRef.current = true;
+      const type: "correct" | "wrong" | "great" =
+        result.score >= 80 ? "great" : result.score >= 50 ? "correct" : "wrong";
+      setFeedback({ show: true, type });
+      setTimeout(() => setFeedback((prev) => ({ ...prev, show: false })), 1600);
+    }
+    if (!hasFinished) {
+      feedbackShownRef.current = false;
+    }
+  }, [hasFinished, isListening, result]);
 
   const changeLevel = useCallback(
     (level: string) => {
@@ -160,7 +177,8 @@ export default function PronunciationPage() {
       </div>
 
       {/* Main card */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-5">
+      <div className="relative bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-5">
+        <FeedbackAnimation show={feedback.show} type={feedback.type} />
         <p className="text-sm text-gray-500">
           {currentIndex + 1} {t("pron_sentence_of")} {filtered.length}
         </p>
