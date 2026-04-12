@@ -24,9 +24,9 @@ export const XP_REWARDS = {
   dictation_wrong: 2,
   pronunciation_great: 15, // >= 80%
   pronunciation_good: 8, // >= 50%
-  pronunciation_low: 3, // < 50%
+  pronunciation_practice: 3, // < 50%
   vocabulary_listen: 1,
-  translate: 2,
+  vocabulary_translate: 2,
   quiz_correct: 10,
   quiz_wrong: 2,
 } as const;

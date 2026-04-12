@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { vocabulary, VocabWord } from "@/data/vocabulary";
 import { useTTS } from "@/hooks/useTTS";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
 
 type Level = "A1" | "A2" | "B1" | "B2" | "C1";
 const LEVELS: Level[] = ["A1", "A2", "B1", "B2", "C1"];
@@ -42,6 +44,8 @@ function saveState(state: FlashcardState) {
 export default function FlashcardsPage() {
   const { t } = useTranslation();
   const { speak, isPlaying, isLoading } = useTTS();
+  const { addXP } = useXP();
+  const { recordPractice } = useStreak();
 
   const [selectedLevel, setSelectedLevel] = useState<Level>("A1");
   const [flipped, setFlipped] = useState(false);
@@ -105,12 +109,16 @@ export default function FlashcardsPage() {
         saveState(newState);
         return newState;
       });
+      if (type === "known") {
+        addXP("vocabulary_listen");
+      }
+      recordPractice();
       // Advance to next card
       if (currentIndex < words.length - 1) {
         goToCard(currentIndex + 1);
       }
     },
-    [currentWord, currentIndex, words.length, goToCard]
+    [currentWord, currentIndex, words.length, goToCard, addXP, recordPractice]
   );
 
   const handleShuffle = useCallback(() => {

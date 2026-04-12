@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { sentences, Sentence } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
 
 const levels = ["All", "A1", "A2", "B1", "B2", "C1"] as const;
 
@@ -188,6 +190,8 @@ function XIcon() {
 
 export default function GrammarPage() {
   const { t } = useTranslation();
+  const { addXP } = useXP();
+  const { recordPractice } = useStreak();
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -257,12 +261,15 @@ export default function GrammarPage() {
         if (isCorrect) {
           setScore((prev) => prev + 1);
           setAnswerState("correct");
+          addXP("dictation_correct");
         } else {
           setAnswerState("wrong");
+          addXP("dictation_wrong");
         }
+        recordPractice();
       }
     },
-    [exercise, answerState, selectedWords]
+    [exercise, answerState, selectedWords, addXP, recordPractice]
   );
 
   const handleNext = useCallback(() => {

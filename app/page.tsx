@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslation } from "@/app/i18n/useTranslation";
 import ProgressBanner from "@/app/components/ProgressBanner";
 import StreakBadge from "@/app/components/StreakBadge";
+import WordOfTheDay from "@/app/components/WordOfTheDay";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -48,6 +49,9 @@ export default function Home() {
 
       {/* Streak Badge */}
       <StreakBadge />
+
+      {/* Word of the Day */}
+      <WordOfTheDay />
 
       {/* Feature Cards */}
       <section className="max-w-6xl mx-auto px-4 py-16">

@@ -4,6 +4,9 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
+import { useProgress } from "@/hooks/useProgress";
 import FeedbackAnimation from "@/app/components/FeedbackAnimation";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
@@ -11,6 +14,9 @@ const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
 
 export default function DictationPage() {
   const { t } = useTranslation();
+  const { addXP } = useXP();
+  const { recordPractice } = useStreak();
+  const { updateDictation } = useProgress();
   const [selectedLevel, setSelectedLevel] = useState<string>("A1");
   const [selectedVoice, setSelectedVoice] = useState<string>("rex");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,9 +48,12 @@ export default function DictationPage() {
       correct: prev.correct + (isCorrect ? 1 : 0),
       total: prev.total + 1,
     }));
+    addXP(isCorrect ? "dictation_correct" : "dictation_wrong");
+    updateDictation(isCorrect);
+    recordPractice();
     setFeedback({ show: true, type: isCorrect ? "correct" : "wrong" });
     setTimeout(() => setFeedback((prev) => ({ ...prev, show: false })), 1600);
-  }, [current, userInput, stop]);
+  }, [current, userInput, stop, addXP, updateDictation, recordPractice]);
 
   const nextSentence = useCallback(() => {
     stop();

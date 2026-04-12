@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { vocabulary, VocabWord } from "@/data/vocabulary";
 import { useTranslation } from "@/app/i18n/useTranslation";
 import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
 
 type Level = "A1" | "A2" | "B1" | "B2" | "C1";
 
@@ -42,6 +43,7 @@ const LEVELS: Level[] = ["A1", "A2", "B1", "B2", "C1"];
 export default function QuizPage() {
   const { t } = useTranslation();
   const { addXP } = useXP();
+  const { recordPractice } = useStreak();
 
   const [selectedLevel, setSelectedLevel] = useState<Level>("A1");
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -90,6 +92,7 @@ export default function QuizPage() {
       setShowFeedback("wrong");
       addXP("quiz_wrong");
     }
+    recordPractice();
 
     const delay = isCorrect ? 1500 : 2500;
     setTimeout(() => {

@@ -5,6 +5,9 @@ import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import { useXP } from "@/hooks/useXP";
+import { useStreak } from "@/hooks/useStreak";
+import { useProgress } from "@/hooks/useProgress";
 import FeedbackAnimation from "@/app/components/FeedbackAnimation";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
@@ -39,6 +42,9 @@ function computeSimilarity(
 
 export default function PronunciationPage() {
   const { t } = useTranslation();
+  const { addXP } = useXP();
+  const { recordPractice } = useStreak();
+  const { updatePronunciation } = useProgress();
   const [selectedLevel, setSelectedLevel] = useState<string>("A1");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState<string>("rex");
@@ -68,7 +74,7 @@ export default function PronunciationPage() {
     return computeSimilarity(current.text, transcript);
   }, [hasFinished, transcript, current]);
 
-  // Trigger feedback animation when result is available
+  // Trigger feedback animation and XP when result is available
   useEffect(() => {
     if (hasFinished && !isListening && result && !feedbackShownRef.current) {
       feedbackShownRef.current = true;
@@ -76,11 +82,22 @@ export default function PronunciationPage() {
         result.score >= 80 ? "great" : result.score >= 50 ? "correct" : "wrong";
       setFeedback({ show: true, type });
       setTimeout(() => setFeedback((prev) => ({ ...prev, show: false })), 1600);
+
+      // XP rewards based on score
+      if (result.score >= 80) {
+        addXP("pronunciation_great");
+      } else if (result.score >= 50) {
+        addXP("pronunciation_good");
+      } else {
+        addXP("pronunciation_practice");
+      }
+      updatePronunciation(result.score);
+      recordPractice();
     }
     if (!hasFinished) {
       feedbackShownRef.current = false;
     }
-  }, [hasFinished, isListening, result]);
+  }, [hasFinished, isListening, result, addXP, updatePronunciation, recordPractice]);
 
   const changeLevel = useCallback(
     (level: string) => {
