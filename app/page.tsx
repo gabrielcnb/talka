@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "@/app/i18n/useTranslation";
 import ProgressBanner from "@/app/components/ProgressBanner";
+import StreakBadge from "@/app/components/StreakBadge";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -45,9 +46,12 @@ export default function Home() {
       {/* Progress Banner */}
       <ProgressBanner />
 
+      {/* Streak Badge */}
+      <StreakBadge />
+
       {/* Feature Cards */}
       <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {/* Vocabulary */}
           <Link
             href="/vocabulary"
@@ -107,6 +111,28 @@ export default function Home() {
               {t("home_dictation_desc")}
             </p>
             <span className="inline-flex items-center text-sm font-medium text-purple-600 group-hover:gap-2 transition-all duration-300">
+              {t("home_start")}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </span>
+          </Link>
+
+          {/* Quiz */}
+          <Link
+            href="/quiz"
+            className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 hover:border-emerald-400 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:scale-[1.03] transition-all duration-300"
+          >
+            <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{t("nav_quiz")}</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {t("quiz_desc")}
+            </p>
+            <span className="inline-flex items-center text-sm font-medium text-emerald-600 group-hover:gap-2 transition-all duration-300">
               {t("home_start")}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />

@@ -12,6 +12,7 @@ export default function NavLinks() {
     { href: "/vocabulary", label: t("nav_vocabulary") },
     { href: "/grammar", label: t("nav_grammar") },
     { href: "/dictation", label: t("nav_dictation") },
+    { href: "/quiz", label: t("nav_quiz") },
     { href: "/pronunciation", label: t("nav_pronunciation") },
   ];
 

@@ -27,6 +27,8 @@ export const XP_REWARDS = {
   pronunciation_low: 3, // < 50%
   vocabulary_listen: 1,
   translate: 2,
+  quiz_correct: 10,
+  quiz_wrong: 2,
 } as const;
 
 export type XPRewardType = keyof typeof XP_REWARDS;
