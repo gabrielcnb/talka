@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { vocabulary } from "@/data/vocabulary";
 import { useTTS } from "@/hooks/useTTS";
+import { useTranslation } from "@/app/i18n/useTranslation";
 
 const levels = ["All", "A1", "A2", "B1", "B2", "C1"] as const;
 
@@ -60,6 +61,7 @@ function ListenButton({
   isLoading: boolean;
   onPlay: (id: number, type: "word" | "example", text: string) => void;
 }) {
+  const { t } = useTranslation();
   const isActive =
     activeItem?.id === itemId && activeItem?.type === itemType;
 
@@ -77,7 +79,7 @@ function ListenButton({
           ? "text-amber-500 bg-amber-50"
           : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
       }`}
-      title={`Listen to ${itemType}`}
+      title={t("btn_listen")}
     >
       {isThisLoading ? (
         <SpinnerIcon className="w-4 h-4" />
@@ -89,6 +91,7 @@ function ListenButton({
 }
 
 export default function VocabularyPage() {
+  const { t } = useTranslation();
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [activeItem, setActiveItem] = useState<PlayingItem>(null);
   const { speak, stop, isPlaying, isLoading } = useTTS();
@@ -118,7 +121,7 @@ export default function VocabularyPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Vocabulary</h1>
+      <h1 className="text-3xl font-bold">{t("vocab_title")}</h1>
 
       <div className="flex gap-2 flex-wrap">
         {levels.map((level) => (
@@ -131,12 +134,12 @@ export default function VocabularyPage() {
                 : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
             }`}
           >
-            {level}
+            {level === "All" ? t("level_all") : level}
           </button>
         ))}
       </div>
 
-      <p className="text-sm text-gray-500">{filtered.length} words</p>
+      <p className="text-sm text-gray-500">{filtered.length} {t("vocab_words")}</p>
 
       <div className="grid gap-4">
         {filtered.map((word) => (

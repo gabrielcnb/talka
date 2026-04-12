@@ -3,17 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const links = [
-  { href: "/vocabulary", label: "Vocabulary" },
-  { href: "/grammar", label: "Grammar" },
-  { href: "/dictation", label: "Dictation" },
-  { href: "/pronunciation", label: "Pronunciation" },
-];
+import { useTranslation } from "@/app/i18n/useTranslation";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useTranslation();
+
+  const links = [
+    { href: "/vocabulary", label: t("nav_vocabulary") },
+    { href: "/grammar", label: t("nav_grammar") },
+    { href: "/dictation", label: t("nav_dictation") },
+    { href: "/pronunciation", label: t("nav_pronunciation") },
+  ];
 
   return (
     <div className="md:hidden">

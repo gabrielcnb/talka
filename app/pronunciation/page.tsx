@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
+import { useTranslation } from "@/app/i18n/useTranslation";
 
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
 const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
@@ -36,6 +37,7 @@ function computeSimilarity(
 }
 
 export default function PronunciationPage() {
+  const { t } = useTranslation();
   const [selectedLevel, setSelectedLevel] = useState<string>("A1");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState<string>("rex");
@@ -110,9 +112,9 @@ export default function PronunciationPage() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <h1 className="text-3xl font-bold">Pronunciation Practice</h1>
+      <h1 className="text-3xl font-bold">{t("pron_title")}</h1>
       <p className="text-gray-600">
-        Listen to the sentence, then record yourself saying it. See how close your pronunciation is!
+        {t("pron_desc")}
       </p>
 
       {/* Level filter */}
@@ -135,7 +137,7 @@ export default function PronunciationPage() {
       {/* Voice selector + score */}
       <div className="flex items-center gap-4 flex-wrap">
         <label className="flex items-center gap-2 text-sm text-gray-600">
-          Voice:
+          {t("pron_voice")}:
           <select
             value={selectedVoice}
             onChange={(e) => setSelectedVoice(e.target.value)}
@@ -151,7 +153,7 @@ export default function PronunciationPage() {
 
         {avgScore !== null && (
           <p className="text-sm text-gray-500">
-            Average score: <span className="font-semibold text-amber-600">{avgScore}%</span>{" "}
+            {t("pron_avg_score")}: <span className="font-semibold text-amber-600">{avgScore}%</span>{" "}
             ({totalScore.attempts} attempt{totalScore.attempts !== 1 ? "s" : ""})
           </p>
         )}
@@ -160,7 +162,7 @@ export default function PronunciationPage() {
       {/* Main card */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-5">
         <p className="text-sm text-gray-500">
-          Sentence {currentIndex + 1} of {filtered.length}
+          {currentIndex + 1} {t("pron_sentence_of")} {filtered.length}
         </p>
 
         {/* Sentence display */}
@@ -185,7 +187,7 @@ export default function PronunciationPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
               </svg>
             )}
-            {isLoading ? "Loading..." : isPlaying ? "Playing..." : "Listen"}
+            {isLoading ? t("pron_loading") : isPlaying ? t("pron_playing") : t("pron_listen")}
           </button>
 
           {/* Record button */}
@@ -203,11 +205,11 @@ export default function PronunciationPage() {
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
               </svg>
-              {isListening ? "Stop Recording" : "Record"}
+              {isListening ? t("pron_stop") : t("pron_record")}
             </button>
           ) : (
             <p className="text-sm text-red-500 self-center">
-              Speech recognition is not supported in this browser.
+              {t("pron_not_supported")}
             </p>
           )}
         </div>
@@ -215,7 +217,7 @@ export default function PronunciationPage() {
         {/* Live transcript while recording */}
         {isListening && transcript && (
           <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
-            <p className="text-sm text-orange-700 font-medium mb-1">Listening...</p>
+            <p className="text-sm text-orange-700 font-medium mb-1">{t("pron_record")}...</p>
             <p className="text-gray-700 italic">{transcript}</p>
           </div>
         )}
@@ -234,16 +236,16 @@ export default function PronunciationPage() {
               }`}
             >
               Score: {result.score}%
-              {result.score >= 80 && " - Great!"}
-              {result.score >= 50 && result.score < 80 && " - Good effort"}
-              {result.score < 50 && " - Keep practicing"}
+              {result.score >= 80 && ` - ${t("pron_great")}`}
+              {result.score >= 50 && result.score < 80 && ` - ${t("pron_good")}`}
+              {result.score < 50 && ` - ${t("pron_practice")}`}
             </div>
 
             {/* Word-by-word comparison */}
             <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-3">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  Target
+                  {t("pron_target")}
                 </p>
                 <p className="text-gray-800 leading-relaxed">
                   {result.comparisons.map((c, i) => (
@@ -263,7 +265,7 @@ export default function PronunciationPage() {
               </div>
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  You said
+                  {t("pron_you_said")}
                 </p>
                 <p className="text-gray-700 italic">{transcript}</p>
               </div>
@@ -274,7 +276,7 @@ export default function PronunciationPage() {
               onClick={handleNext}
               className="px-6 py-2.5 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors"
             >
-              Next Sentence
+              {t("pron_next")}
             </button>
           </div>
         )}
@@ -283,7 +285,7 @@ export default function PronunciationPage() {
         {hasFinished && !isListening && !transcript && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700 text-sm">
-              No speech detected. Make sure your microphone is working and try again.
+              {t("pron_no_speech")}
             </p>
           </div>
         )}

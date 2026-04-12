@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "@/app/i18n/useTranslation";
 
 export default function Home() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-[calc(100vh-4rem)]">
       {/* Hero Section */}
@@ -15,17 +19,16 @@ export default function Home() {
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight">
             <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
-              Master English
+              {t("home_hero_title")}
             </span>
             <br />
             <span className="text-gray-900">
-              with AI-Powered Practice
+              {t("home_hero_subtitle")}
             </span>
           </h1>
 
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Sharpen your pronunciation, expand your vocabulary, perfect your grammar,
-            and train your listening — all powered by AI voices and speech recognition.
+            {t("home_hero_subtitle")}
           </p>
 
           <div className="pt-4">
@@ -33,7 +36,7 @@ export default function Home() {
               href="/pronunciation"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-lg rounded-full shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-105 transition-all duration-300"
             >
-              Start Practicing
+              {t("home_start")}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
@@ -55,9 +58,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Vocabulary</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_vocabulary")}</h3>
             <p className="text-sm text-gray-500 mb-4">
-              Learn new words with definitions, phonetics, and example sentences across all levels.
+              {t("home_vocab_desc")}
             </p>
             <span className="inline-flex items-center text-sm font-medium text-indigo-600 group-hover:gap-2 transition-all duration-300">
               Practice
@@ -77,9 +80,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Grammar</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_grammar")}</h3>
             <p className="text-sm text-gray-500 mb-4">
-              Study sentence structures and patterns at different difficulty levels.
+              {t("home_grammar_desc")}
             </p>
             <span className="inline-flex items-center text-sm font-medium text-teal-600 group-hover:gap-2 transition-all duration-300">
               Practice
@@ -99,9 +102,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Dictation</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_dictation")}</h3>
             <p className="text-sm text-gray-500 mb-4">
-              Listen to sentences and type what you hear. Real listening practice with AI voices.
+              {t("home_dictation_desc")}
             </p>
             <span className="inline-flex items-center text-sm font-medium text-purple-600 group-hover:gap-2 transition-all duration-300">
               Practice
@@ -121,9 +124,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Pronunciation</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_pronunciation")}</h3>
             <p className="text-sm text-gray-500 mb-4">
-              Listen, record yourself, and get word-by-word comparison with speech recognition.
+              {t("home_pronunciation_desc")}
             </p>
             <span className="inline-flex items-center text-sm font-medium text-rose-600 group-hover:gap-2 transition-all duration-300">
               Practice
@@ -142,25 +145,25 @@ export default function Home() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
             </svg>
-            210 sentences
+            {t("home_sentences")}
           </span>
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-violet-50 text-violet-700 text-sm font-medium border border-violet-100">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            5 CEFR levels (A1-C1)
+            {t("home_levels")}
           </span>
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
             </svg>
-            5 AI voices
+            {t("home_voices")}
           </span>
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-sm font-medium border border-rose-100">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
             </svg>
-            Speech recognition
+            {t("home_speech")}
           </span>
         </div>
       </section>

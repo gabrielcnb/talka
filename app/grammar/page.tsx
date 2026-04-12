@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
+import { useTranslation } from "@/app/i18n/useTranslation";
 
 const levels = ["All", "A1", "A2", "B1", "B2", "C1"] as const;
 
@@ -45,6 +46,7 @@ function LoadingSpinner() {
 }
 
 export default function GrammarPage() {
+  const { t } = useTranslation();
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [playingSentenceId, setPlayingSentenceId] = useState<number | null>(null);
   const { speak, stop, isPlaying, isLoading } = useTTS();
@@ -66,7 +68,7 @@ export default function GrammarPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Grammar Practice</h1>
+      <h1 className="text-3xl font-bold">{t("grammar_title")}</h1>
 
       <div className="flex gap-2 flex-wrap">
         {levels.map((level) => (
@@ -79,12 +81,12 @@ export default function GrammarPage() {
                 : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
             }`}
           >
-            {level}
+            {level === "All" ? t("level_all") : level}
           </button>
         ))}
       </div>
 
-      <p className="text-sm text-gray-500">{filtered.length} sentences</p>
+      <p className="text-sm text-gray-500">{filtered.length} {t("grammar_sentences")}</p>
 
       <div className="grid gap-3">
         {filtered.map((sentence) => {
@@ -107,7 +109,7 @@ export default function GrammarPage() {
                         ? "bg-accent-100 text-accent-600"
                         : "text-gray-400 hover:text-accent-600 hover:bg-gray-100"
                   }`}
-                  aria-label={showPlaying ? "Stop listening" : "Listen to sentence"}
+                  aria-label={t("btn_listen")}
                 >
                   {showLoading ? <LoadingSpinner /> : <SpeakerIcon />}
                 </button>
