@@ -137,6 +137,7 @@ export default function VocabularyPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text, targetLang: lang, context }),
       });
+      if (!res.ok) throw new Error("Translation failed");
       const data = await res.json();
       setTranslations((prev) => ({ ...prev, [id]: data.translation }));
     } catch {

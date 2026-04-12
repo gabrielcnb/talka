@@ -15,6 +15,10 @@ function getRateLimitResult(ip: string): { allowed: boolean } {
     }
   });
 
+  if (rateLimitMap.size > 10000) {
+    rateLimitMap.clear();
+  }
+
   const entry = rateLimitMap.get(ip);
 
   if (!entry || now > entry.resetTime) {
@@ -50,13 +54,15 @@ const ALLOWED_LANGS: Record<string, string> = {
   nl: "Dutch",
 };
 
+const ALLOWED_ORIGINS = [
+  "https://voxify-sandy.vercel.app",
+  process.env.NEXT_PUBLIC_APP_URL,
+].filter(Boolean) as string[];
+
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
-  if (origin.startsWith("http://localhost:")) return true;
-  if (origin.endsWith(".vercel.app")) return true;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-  if (appUrl && origin.startsWith(appUrl)) return true;
-  return false;
+  if (process.env.NODE_ENV === "development" && origin.startsWith("http://localhost:")) return true;
+  return ALLOWED_ORIGINS.some(allowed => origin === allowed);
 }
 
 const MAX_TEXT_LENGTH = 1000;
@@ -74,8 +80,8 @@ export async function POST(req: NextRequest) {
 
     // 2. Rate limiting
     const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.ip ||
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       "unknown";
 
     const { allowed } = getRateLimitResult(ip);
