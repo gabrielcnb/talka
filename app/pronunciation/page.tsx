@@ -13,31 +13,191 @@ import FeedbackAnimation from "@/app/components/FeedbackAnimation";
 const levels = ["A1", "A2", "B1", "B2", "C1"] as const;
 const voices = ["eve", "ara", "rex", "sal", "leo"] as const;
 
+const CONTRACTIONS: Record<string, string[]> = {
+  "i've": ["i", "have"],
+  "don't": ["do", "not"],
+  "she's": ["she", "is"],
+  "he's": ["he", "is"],
+  "we're": ["we", "are"],
+  "they're": ["they", "are"],
+  "it's": ["it", "is"],
+  "can't": ["can", "not"],
+  "won't": ["will", "not"],
+  "wouldn't": ["would", "not"],
+  "couldn't": ["could", "not"],
+  "shouldn't": ["should", "not"],
+  "isn't": ["is", "not"],
+  "aren't": ["are", "not"],
+  "wasn't": ["was", "not"],
+  "weren't": ["were", "not"],
+  "hasn't": ["has", "not"],
+  "haven't": ["have", "not"],
+  "hadn't": ["had", "not"],
+  "didn't": ["did", "not"],
+  "doesn't": ["does", "not"],
+  "i'm": ["i", "am"],
+  "you're": ["you", "are"],
+  "let's": ["let", "us"],
+  "that's": ["that", "is"],
+  "there's": ["there", "is"],
+  "here's": ["here", "is"],
+  "what's": ["what", "is"],
+  "who's": ["who", "is"],
+};
+
+// Alternate expansions for contractions that can mean two things (e.g. "she's" = "she has")
+const CONTRACTIONS_ALT: Record<string, string[]> = {
+  "she's": ["she", "has"],
+  "he's": ["he", "has"],
+  "it's": ["it", "has"],
+  "that's": ["that", "has"],
+  "there's": ["there", "has"],
+  "what's": ["what", "has"],
+  "who's": ["who", "has"],
+};
+
+const NUMBER_WORD_TO_DIGIT: Record<string, string> = {
+  zero: "0", one: "1", two: "2", three: "3", four: "4",
+  five: "5", six: "6", seven: "7", eight: "8", nine: "9",
+  ten: "10", eleven: "11", twelve: "12",
+  twenty: "20", thirty: "30", forty: "40", fifty: "50",
+  sixty: "60", seventy: "70", eighty: "80", ninety: "90",
+  hundred: "100",
+};
+
+const DIGIT_TO_NUMBER_WORD: Record<string, string> = Object.fromEntries(
+  Object.entries(NUMBER_WORD_TO_DIGIT).map(([k, v]) => [v, k])
+);
+
+function normalizeNumber(word: string): string {
+  // "8:00" -> "8", strip colon-separated time suffixes of zeros
+  const timeMatch = word.match(/^(\d+):0+$/);
+  if (timeMatch) return timeMatch[1];
+  return word;
+}
+
+function expandContractions(words: string[]): string[] {
+  const result: string[] = [];
+  for (const w of words) {
+    if (CONTRACTIONS[w]) {
+      result.push(...CONTRACTIONS[w]);
+    } else {
+      result.push(w);
+    }
+  }
+  return result;
+}
+
+function expandContractionsAlt(words: string[]): string[] {
+  const result: string[] = [];
+  for (const w of words) {
+    if (CONTRACTIONS_ALT[w]) {
+      result.push(...CONTRACTIONS_ALT[w]);
+    } else if (CONTRACTIONS[w]) {
+      result.push(...CONTRACTIONS[w]);
+    } else {
+      result.push(w);
+    }
+  }
+  return result;
+}
+
 function normalize(text: string): string[] {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9\s'-]/g, "")
+    .replace(/[^a-z0-9\s':,-]/g, "")
     .trim()
     .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w.replace(/[^a-z0-9']/g, "")) // strip trailing punctuation like commas
     .filter(Boolean);
+}
+
+function wordsMatch(a: string, b: string): boolean {
+  if (a === b) return true;
+  const na = normalizeNumber(a);
+  const nb = normalizeNumber(b);
+  if (na === nb) return true;
+  // number word vs digit: "eight" vs "8"
+  if (NUMBER_WORD_TO_DIGIT[na] === nb) return true;
+  if (NUMBER_WORD_TO_DIGIT[nb] === na) return true;
+  if (DIGIT_TO_NUMBER_WORD[na] === nb) return true;
+  if (DIGIT_TO_NUMBER_WORD[nb] === na) return true;
+  return false;
+}
+
+function computeExpandedScore(
+  origWords: string[],
+  spokenWords: string[]
+): { score: number; matchedOrig: boolean[] } {
+  // Use a two-pointer approach to align expanded forms
+  const matchedOrig = new Array(origWords.length).fill(false);
+  let si = 0;
+  for (let oi = 0; oi < origWords.length && si < spokenWords.length; oi++) {
+    if (wordsMatch(origWords[oi], spokenWords[si])) {
+      matchedOrig[oi] = true;
+      si++;
+    } else {
+      // Try to see if the next spoken words match (skip unrecognized spoken words)
+      // But don't skip too many
+      let found = false;
+      for (let look = si + 1; look < Math.min(si + 3, spokenWords.length); look++) {
+        if (wordsMatch(origWords[oi], spokenWords[look])) {
+          matchedOrig[oi] = true;
+          si = look + 1;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        // skip this orig word as unmatched
+      }
+    }
+  }
+  const correctCount = matchedOrig.filter(Boolean).length;
+  const score = origWords.length > 0 ? Math.round((correctCount / origWords.length) * 100) : 0;
+  return { score, matchedOrig };
 }
 
 function computeSimilarity(
   original: string,
   spoken: string
 ): { score: number; comparisons: { word: string; correct: boolean }[] } {
-  const origWords = normalize(original);
-  const spokenWords = normalize(spoken);
+  const rawOrigWords = normalize(original);
+  const rawSpokenWords = normalize(spoken);
 
-  const comparisons = origWords.map((word, i) => ({
+  // Try multiple expansion strategies and pick the best score
+  const origVariants = [
+    expandContractions(rawOrigWords),
+    expandContractionsAlt(rawOrigWords),
+  ];
+  const spokenVariants = [
+    expandContractions(rawSpokenWords),
+    expandContractionsAlt(rawSpokenWords),
+  ];
+
+  let bestScore = 0;
+  let bestOrigExpanded: string[] = origVariants[0];
+  let bestMatched: boolean[] = new Array(origVariants[0].length).fill(false);
+
+  for (const oe of origVariants) {
+    for (const se of spokenVariants) {
+      const { score, matchedOrig } = computeExpandedScore(oe, se);
+      if (score > bestScore) {
+        bestScore = score;
+        bestOrigExpanded = oe;
+        bestMatched = matchedOrig;
+      }
+    }
+  }
+
+  // Build comparisons from the best expanded original
+  const comparisons = bestOrigExpanded.map((word, i) => ({
     word,
-    correct: i < spokenWords.length && spokenWords[i] === word,
+    correct: bestMatched[i],
   }));
 
-  const correctCount = comparisons.filter((c) => c.correct).length;
-  const score = origWords.length > 0 ? Math.round((correctCount / origWords.length) * 100) : 0;
-
-  return { score, comparisons };
+  return { score: bestScore, comparisons };
 }
 
 export default function PronunciationPage() {

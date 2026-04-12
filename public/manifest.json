@@ -1,6 +1,6 @@
 {
-  "name": "Voxify - Master English with AI",
-  "short_name": "Voxify",
+  "name": "Spokn - Master English with AI",
+  "short_name": "Spokn",
   "description": "AI-powered English learning with pronunciation, vocabulary, grammar, and dictation",
   "start_url": "/",
   "display": "standalone",
