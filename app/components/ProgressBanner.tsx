@@ -35,11 +35,10 @@ export default function ProgressBanner() {
   const showStreak = progress.dictation.bestStreak > 3;
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-4">
-      <div className="flex flex-wrap items-center justify-center gap-4 px-6 py-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+      <div className="flex flex-wrap items-center justify-center gap-4 px-5 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
         {/* Dictation stats */}
         {progress.dictation.total > 0 && (
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 text-purple-500"
@@ -55,7 +54,7 @@ export default function ProgressBanner() {
               />
             </svg>
             <span>
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 dark:text-gray-100">
                 {progress.dictation.correct}
               </span>{" "}
               correct dictations ({dictPct}%)
@@ -82,12 +81,12 @@ export default function ProgressBanner() {
         {/* Separator */}
         {progress.dictation.total > 0 &&
           progress.pronunciation.totalAttempts > 0 && (
-            <div className="hidden sm:block w-px h-5 bg-gray-200" />
+            <div className="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700" />
           )}
 
         {/* Pronunciation stats */}
         {progress.pronunciation.totalAttempts > 0 && (
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 text-rose-500"
@@ -103,7 +102,7 @@ export default function ProgressBanner() {
               />
             </svg>
             <span>
-              <span className="font-semibold text-gray-900">{avgPronunciation}%</span>{" "}
+              <span className="font-semibold text-gray-900 dark:text-gray-100">{avgPronunciation}%</span>{" "}
               avg pronunciation
             </span>
           </div>
@@ -113,15 +112,15 @@ export default function ProgressBanner() {
         {(progress.dictation.total > 0 ||
           progress.pronunciation.totalAttempts > 0) &&
           progress.lastPracticed && (
-            <div className="hidden sm:block w-px h-5 bg-gray-200" />
+            <div className="hidden sm:block w-px h-5 bg-gray-200 dark:bg-gray-700" />
           )}
 
         {/* Last practiced */}
         {progress.lastPracticed && (
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-gray-400"
+              className="h-4 w-4 text-gray-400 dark:text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -137,6 +136,5 @@ export default function ProgressBanner() {
           </div>
         )}
       </div>
-    </section>
   );
 }

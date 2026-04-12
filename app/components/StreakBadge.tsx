@@ -35,8 +35,7 @@ export default function StreakBadge() {
   const flameColor = getFlameColor(currentStreak);
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-2">
-      <div className="flex flex-col items-center gap-3 px-6 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+      <div className="flex flex-col items-center gap-3 px-5 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
         {/* Streak display */}
         <div className="flex items-center gap-2">
           {currentStreak > 0 ? (
@@ -108,6 +107,5 @@ export default function StreakBadge() {
           </span>
         )}
       </div>
-    </section>
   );
 }
