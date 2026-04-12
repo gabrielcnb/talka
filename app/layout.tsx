@@ -10,7 +10,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Fluency - Master English",
+  title: "Voxify - Master English",
   description:
     "Master English with AI-powered vocabulary, grammar, dictation, and pronunciation practice",
 };
@@ -47,7 +47,7 @@ export default function RootLayout({
                 <path d="M12 10h.01" />
                 <path d="M16 10h.01" />
               </svg>
-              Fluency
+              Voxify
             </Link>
             <div className="flex items-center gap-4">
               <NavLinks />

@@ -90,11 +90,65 @@ function ListenButton({
   );
 }
 
+function GlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className || "w-4 h-4"}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
+
 export default function VocabularyPage() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [activeItem, setActiveItem] = useState<PlayingItem>(null);
   const { speak, stop, isPlaying, isLoading } = useTTS();
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [translating, setTranslating] = useState<Record<string, boolean>>({});
+
+  const handleTranslate = async (
+    id: string,
+    text: string,
+    context: "definition" | "example"
+  ) => {
+    if (translations[id]) {
+      setTranslations((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+      return;
+    }
+    setTranslating((prev) => ({ ...prev, [id]: true }));
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, targetLang: lang, context }),
+      });
+      const data = await res.json();
+      setTranslations((prev) => ({ ...prev, [id]: data.translation }));
+    } catch {
+      // silently fail
+    } finally {
+      setTranslating((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    }
+  };
 
   const filtered =
     selectedLevel === "All"
@@ -168,20 +222,84 @@ export default function VocabularyPage() {
                 {word.level}
               </span>
             </div>
-            <p className="text-gray-700">{word.definition}</p>
-            <div className="flex items-center gap-2">
-              <p className="text-sm text-gray-500 italic">
-                &quot;{word.example}&quot;
-              </p>
-              <ListenButton
-                text={word.example}
-                itemId={word.id}
-                itemType="example"
-                activeItem={activeItem}
-                isPlaying={isPlaying}
-                isLoading={isLoading}
-                onPlay={handlePlay}
-              />
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <p className="text-gray-700">{word.definition}</p>
+                {lang !== "en" && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleTranslate(
+                        `def-${word.id}`,
+                        word.definition,
+                        "definition"
+                      )
+                    }
+                    className={`inline-flex items-center justify-center rounded-full p-1 transition-colors shrink-0 ${
+                      translations[`def-${word.id}`]
+                        ? "text-indigo-600 bg-indigo-50"
+                        : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                    }`}
+                    title={t("btn_translate") || "Translate"}
+                  >
+                    {translating[`def-${word.id}`] ? (
+                      <SpinnerIcon className="w-4 h-4" />
+                    ) : (
+                      <GlobeIcon className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
+              </div>
+              {translations[`def-${word.id}`] && (
+                <p className="text-sm text-indigo-700 bg-indigo-50 rounded px-2 py-1">
+                  {translations[`def-${word.id}`]}
+                </p>
+              )}
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-gray-500 italic">
+                  &quot;{word.example}&quot;
+                </p>
+                <ListenButton
+                  text={word.example}
+                  itemId={word.id}
+                  itemType="example"
+                  activeItem={activeItem}
+                  isPlaying={isPlaying}
+                  isLoading={isLoading}
+                  onPlay={handlePlay}
+                />
+                {lang !== "en" && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleTranslate(
+                        `ex-${word.id}`,
+                        word.example,
+                        "example"
+                      )
+                    }
+                    className={`inline-flex items-center justify-center rounded-full p-1 transition-colors shrink-0 ${
+                      translations[`ex-${word.id}`]
+                        ? "text-indigo-600 bg-indigo-50"
+                        : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                    }`}
+                    title={t("btn_translate") || "Translate"}
+                  >
+                    {translating[`ex-${word.id}`] ? (
+                      <SpinnerIcon className="w-4 h-4" />
+                    ) : (
+                      <GlobeIcon className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
+              </div>
+              {translations[`ex-${word.id}`] && (
+                <p className="text-sm text-indigo-700 bg-indigo-50 rounded px-2 py-1">
+                  {translations[`ex-${word.id}`]}
+                </p>
+              )}
             </div>
           </div>
         ))}
