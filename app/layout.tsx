@@ -46,6 +46,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:outline-none">
+          Skip to content
+        </a>
         <nav className="relative bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 shadow-lg">
           <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
             <Link
@@ -85,7 +88,7 @@ export default function RootLayout({
 
         <LanguageSelector />
 
-        <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-8">
+        <main id="main-content" className="flex-1 max-w-5xl w-full mx-auto px-6 py-8">
           {children}
         </main>
 

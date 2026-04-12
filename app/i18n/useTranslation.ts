@@ -12,6 +12,9 @@ export function useTranslation() {
       setLang(stored);
     }
 
+    // Set document lang to "en" since the primary content is English
+    document.documentElement.lang = "en";
+
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "fluency_native_lang" && e.newValue && translations[e.newValue]) {
         setLang(e.newValue);

@@ -28,6 +28,7 @@ export default function LanguageBadge() {
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-colors duration-150 cursor-pointer"
+        aria-label="Change language"
       >
         <span className="text-base">{current.flag}</span>
         <span className="text-xs font-medium text-indigo-700">{current.name}</span>

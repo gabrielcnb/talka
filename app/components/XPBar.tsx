@@ -39,7 +39,14 @@ export default function XPBar() {
 
         {/* Progress bar - hidden on mobile */}
         <div className="hidden sm:flex flex-1 items-center gap-2">
-          <div className="flex-1 h-2 bg-indigo-950/50 dark:bg-indigo-950/80 rounded-full overflow-hidden">
+          <div
+            className="flex-1 h-2 bg-indigo-950/50 dark:bg-indigo-950/80 rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuenow={Math.round(xpProgress)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Level ${level} progress: ${Math.round(xpProgress)}%`}
+          >
             <div
               className={`h-full rounded-full transition-all duration-500 ease-out ${
                 pulse ? "animate-xp-pulse" : ""

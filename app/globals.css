@@ -66,6 +66,13 @@ body {
   scrollbar-color: #374151 transparent;
 }
 
+/* Focus ring for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Smooth page transition feel */
 main {
   animation: fadeIn 0.3s ease-out;
