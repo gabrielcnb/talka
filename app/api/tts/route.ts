@@ -34,12 +34,14 @@ function getRateLimitResult(ip: string): { allowed: boolean } {
 const ALLOWED_VOICES = ["eve", "ara", "rex", "sal", "leo"] as const;
 const DEFAULT_VOICE = "rex";
 
-// --- Allowed origins (add your production domain here) ---
-const ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  process.env.NEXT_PUBLIC_APP_URL,
-].filter(Boolean);
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (origin.startsWith("http://localhost:")) return true;
+  if (origin.endsWith(".vercel.app")) return true;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (appUrl && origin.startsWith(appUrl)) return true;
+  return false;
+}
 
 export async function POST(req: NextRequest) {
   // 1. Origin / Referer check
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
   const referer = req.headers.get("referer");
   const requestOrigin = origin || (referer ? new URL(referer).origin : null);
 
-  if (!requestOrigin || !ALLOWED_ORIGINS.some((o) => requestOrigin.startsWith(o!))) {
+  if (!isAllowedOrigin(requestOrigin)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

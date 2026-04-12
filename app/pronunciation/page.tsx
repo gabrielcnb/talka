@@ -39,13 +39,13 @@ export default function PronunciationPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("A1");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState<string>("rex");
-  const [hasRecorded, setHasRecorded] = useState(false);
   const [totalScore, setTotalScore] = useState({ points: 0, attempts: 0 });
 
   const { speak, stop, isPlaying, isLoading } = useTTS();
   const {
     isListening,
     transcript,
+    hasFinished,
     startListening,
     stopListening,
     resetTranscript,
@@ -59,9 +59,9 @@ export default function PronunciationPage() {
   const current = filtered[currentIndex];
 
   const result = useMemo(() => {
-    if (!hasRecorded || !transcript || !current) return null;
+    if (!hasFinished || !transcript || !current) return null;
     return computeSimilarity(current.text, transcript);
-  }, [hasRecorded, transcript, current]);
+  }, [hasFinished, transcript, current]);
 
   const changeLevel = useCallback(
     (level: string) => {
@@ -70,7 +70,6 @@ export default function PronunciationPage() {
       resetTranscript();
       setSelectedLevel(level);
       setCurrentIndex(0);
-      setHasRecorded(false);
       setTotalScore({ points: 0, attempts: 0 });
     },
     [stop, stopListening, resetTranscript]
@@ -83,10 +82,8 @@ export default function PronunciationPage() {
   const handleRecord = useCallback(() => {
     if (isListening) {
       stopListening();
-      setHasRecorded(true);
     } else {
       resetTranscript();
-      setHasRecorded(false);
       startListening();
     }
   }, [isListening, stopListening, startListening, resetTranscript]);
@@ -101,7 +98,6 @@ export default function PronunciationPage() {
     stop();
     stopListening();
     resetTranscript();
-    setHasRecorded(false);
     setCurrentIndex((prev) => (prev + 1) % filtered.length);
   }, [result, stop, stopListening, resetTranscript, filtered.length]);
 
@@ -225,7 +221,7 @@ export default function PronunciationPage() {
         )}
 
         {/* Result comparison */}
-        {hasRecorded && !isListening && transcript && result && (
+        {hasFinished && !isListening && transcript && result && (
           <div className="space-y-4">
             {/* Score badge */}
             <div
@@ -284,7 +280,7 @@ export default function PronunciationPage() {
         )}
 
         {/* No transcript after recording */}
-        {hasRecorded && !isListening && !transcript && (
+        {hasFinished && !isListening && !transcript && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700 text-sm">
               No speech detected. Make sure your microphone is working and try again.

@@ -32,6 +32,7 @@ declare global {
 interface UseSpeechRecognitionReturn {
   isListening: boolean;
   transcript: string;
+  hasFinished: boolean;
   startListening: () => void;
   stopListening: () => void;
   resetTranscript: () => void;
@@ -41,6 +42,7 @@ interface UseSpeechRecognitionReturn {
 export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [hasFinished, setHasFinished] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   const isSupported =
@@ -55,7 +57,7 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
     recognition.interimResults = true;
-    recognition.continuous = false;
+    recognition.continuous = true;
 
     recognition.onresult = (event) => {
       let text = "";
@@ -67,6 +69,7 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
 
     recognition.onend = () => {
       setIsListening(false);
+      setHasFinished(true);
     };
 
     recognition.onerror = () => {
@@ -74,6 +77,7 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
     };
 
     recognitionRef.current = recognition;
+    setHasFinished(false);
     recognition.start();
     setIsListening(true);
   }, [isSupported]);
@@ -81,15 +85,18 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   const stopListening = useCallback(() => {
     recognitionRef.current?.stop();
     setIsListening(false);
+    setHasFinished(true);
   }, []);
 
   const resetTranscript = useCallback(() => {
     setTranscript("");
+    setHasFinished(false);
   }, []);
 
   return {
     isListening,
     transcript,
+    hasFinished,
     startListening,
     stopListening,
     resetTranscript,
