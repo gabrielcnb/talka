@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="space-y-8">
@@ -12,7 +14,7 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <a
+        <Link
           href="/vocabulary"
           className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-lg transition-all"
         >
@@ -23,9 +25,9 @@ export default function Home() {
             Learn new words with definitions, phonetics, and example sentences.
             Filter by level.
           </p>
-        </a>
+        </Link>
 
-        <a
+        <Link
           href="/grammar"
           className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-accent-400 hover:shadow-lg transition-all"
         >
@@ -36,9 +38,9 @@ export default function Home() {
             Study sentence structures and patterns at different difficulty
             levels.
           </p>
-        </a>
+        </Link>
 
-        <a
+        <Link
           href="/dictation"
           className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-purple-400 hover:shadow-lg transition-all"
         >
@@ -48,9 +50,9 @@ export default function Home() {
           <p className="text-gray-600">
             Listen to sentences and type what you hear. Real listening practice.
           </p>
-        </a>
+        </Link>
 
-        <a
+        <Link
           href="/pronunciation"
           className="block p-6 bg-white rounded-xl border border-gray-200 hover:border-amber-400 hover:shadow-lg transition-all"
         >
@@ -61,7 +63,7 @@ export default function Home() {
             Listen to correct pronunciation, record yourself, and compare
             word-by-word.
           </p>
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,34 +17,34 @@ export default function RootLayout({
       <body className="min-h-screen">
         <nav className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <a href="/" className="text-xl font-bold text-primary-600">
+            <Link href="/" className="text-xl font-bold text-primary-600">
               English AI
-            </a>
+            </Link>
             <div className="flex gap-6">
-              <a
+              <Link
                 href="/vocabulary"
                 className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
               >
                 Vocabulary
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/grammar"
                 className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
               >
                 Grammar
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/dictation"
                 className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
               >
                 Dictation
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/pronunciation"
                 className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
               >
                 Pronunciation
-              </a>
+              </Link>
             </div>
           </div>
         </nav>

@@ -48,17 +48,20 @@ function ListenButton({
   itemId,
   itemType,
   activeItem,
+  isPlaying,
+  isLoading,
   onPlay,
 }: {
   text: string;
   itemId: number;
   itemType: "word" | "example";
   activeItem: PlayingItem;
+  isPlaying: boolean;
+  isLoading: boolean;
   onPlay: (id: number, type: "word" | "example", text: string) => void;
 }) {
   const isActive =
     activeItem?.id === itemId && activeItem?.type === itemType;
-  const { isPlaying, isLoading } = useTTS();
 
   const isThisPlaying = isActive && isPlaying;
   const isThisLoading = isActive && isLoading;
@@ -88,7 +91,7 @@ function ListenButton({
 export default function VocabularyPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [activeItem, setActiveItem] = useState<PlayingItem>(null);
-  const { speak, stop } = useTTS();
+  const { speak, stop, isPlaying, isLoading } = useTTS();
 
   const filtered =
     selectedLevel === "All"
@@ -150,6 +153,8 @@ export default function VocabularyPage() {
                 itemId={word.id}
                 itemType="word"
                 activeItem={activeItem}
+                isPlaying={isPlaying}
+                isLoading={isLoading}
                 onPlay={handlePlay}
               />
               <span className="text-sm text-gray-500">{word.phonetic}</span>
@@ -170,6 +175,8 @@ export default function VocabularyPage() {
                 itemId={word.id}
                 itemType="example"
                 activeItem={activeItem}
+                isPlaying={isPlaying}
+                isLoading={isLoading}
                 onPlay={handlePlay}
               />
             </div>
