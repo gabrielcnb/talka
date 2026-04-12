@@ -43,7 +43,7 @@ export default function SettingsPage() {
     setCanShare(typeof navigator !== "undefined" && !!navigator.share);
   }, []);
 
-  const shareText = `I'm Level ${level} (${levelName}) on Spokn! ${totalXP} XP earned, ${currentStreak} day streak. Practice English with AI at https://voxify-sandy.vercel.app`;
+  const shareText = `I'm Level ${level} (${levelName}) on Talka! ${totalXP} XP earned, ${currentStreak} day streak. Practice English with AI at https://voxify-sandy.vercel.app`;
 
   const handleShare = useCallback(async () => {
     if (canShare) {

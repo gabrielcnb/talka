@@ -15,8 +15,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://voxify-sandy.vercel.app'),
   title: {
-    default: "Spokn - Master English with AI",
-    template: "%s | Spokn",
+    default: "Talka - Master English with AI",
+    template: "%s | Talka",
   },
   description:
     "AI-powered English learning: pronunciation practice, vocabulary, grammar, and dictation with speech recognition and text-to-speech.",
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Spokn",
+    title: "Talka",
   },
   icons: {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
   },
   openGraph: {
-    title: "Spokn - Master English with AI",
+    title: "Talka - Master English with AI",
     description:
       "AI-powered English learning with pronunciation practice, vocabulary building, and real-time speech recognition.",
     type: "website",
@@ -74,7 +74,7 @@ export default function RootLayout({
                 <path d="M12 10h.01" />
                 <path d="M16 10h.01" />
               </svg>
-              Spokn
+              Talka
             </Link>
             <div className="flex items-center gap-4">
               <NavLinks />
