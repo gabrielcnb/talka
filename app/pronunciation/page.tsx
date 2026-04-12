@@ -113,7 +113,7 @@ export default function PronunciationPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <h1 className="text-3xl font-bold">{t("pron_title")}</h1>
-      <p className="text-gray-600">
+      <p className="text-gray-600 dark:text-gray-400">
         {t("pron_desc")}
       </p>
 
@@ -126,7 +126,7 @@ export default function PronunciationPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedLevel === level
                 ? "bg-amber-500 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                : "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             }`}
           >
             {level}
@@ -136,12 +136,12 @@ export default function PronunciationPage() {
 
       {/* Voice selector + score */}
       <div className="flex items-center gap-4 flex-wrap">
-        <label className="flex items-center gap-2 text-sm text-gray-600">
+        <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           {t("pron_voice")}:
           <select
             value={selectedVoice}
             onChange={(e) => setSelectedVoice(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
             {voices.map((v) => (
               <option key={v} value={v}>
@@ -160,13 +160,13 @@ export default function PronunciationPage() {
       </div>
 
       {/* Main card */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-5">
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-5">
         <p className="text-sm text-gray-500">
           {currentIndex + 1} {t("pron_sentence_of")} {filtered.length}
         </p>
 
         {/* Sentence display */}
-        <p className="text-lg text-gray-800 font-medium leading-relaxed">
+        <p className="text-lg text-gray-800 dark:text-gray-200 font-medium leading-relaxed">
           {current.text}
         </p>
 
@@ -242,7 +242,7 @@ export default function PronunciationPage() {
             </div>
 
             {/* Word-by-word comparison */}
-            <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-3">
+            <div className="p-4 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg space-y-3">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                   {t("pron_target")}
@@ -267,7 +267,7 @@ export default function PronunciationPage() {
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                   {t("pron_you_said")}
                 </p>
-                <p className="text-gray-700 italic">{transcript}</p>
+                <p className="text-gray-700 dark:text-gray-300 italic">{transcript}</p>
               </div>
             </div>
 

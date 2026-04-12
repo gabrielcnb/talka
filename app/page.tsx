@@ -24,7 +24,7 @@ export default function Home() {
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t("home_hero_subtitle")}
           </p>
 
@@ -51,14 +51,14 @@ export default function Home() {
           {/* Vocabulary */}
           <Link
             href="/vocabulary"
-            className="group relative p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-indigo-400 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.03] transition-all duration-300"
+            className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 hover:border-indigo-400 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:scale-[1.03] transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+            <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_vocabulary")}</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{t("nav_vocabulary")}</h3>
             <p className="text-sm text-gray-500 mb-4">
               {t("home_vocab_desc")}
             </p>
@@ -73,14 +73,14 @@ export default function Home() {
           {/* Grammar */}
           <Link
             href="/grammar"
-            className="group relative p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-teal-400 shadow-sm hover:shadow-xl hover:shadow-teal-500/10 hover:scale-[1.03] transition-all duration-300"
+            className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 hover:border-teal-400 shadow-sm hover:shadow-xl hover:shadow-teal-500/10 hover:scale-[1.03] transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center mb-4 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+            <div className="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-4 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_grammar")}</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{t("nav_grammar")}</h3>
             <p className="text-sm text-gray-500 mb-4">
               {t("home_grammar_desc")}
             </p>
@@ -95,14 +95,14 @@ export default function Home() {
           {/* Dictation */}
           <Link
             href="/dictation"
-            className="group relative p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-purple-400 shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:scale-[1.03] transition-all duration-300"
+            className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 hover:border-purple-400 shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:scale-[1.03] transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+            <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_dictation")}</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{t("nav_dictation")}</h3>
             <p className="text-sm text-gray-500 mb-4">
               {t("home_dictation_desc")}
             </p>
@@ -117,14 +117,14 @@ export default function Home() {
           {/* Pronunciation */}
           <Link
             href="/pronunciation"
-            className="group relative p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-rose-400 shadow-sm hover:shadow-xl hover:shadow-rose-500/10 hover:scale-[1.03] transition-all duration-300"
+            className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 hover:border-rose-400 shadow-sm hover:shadow-xl hover:shadow-rose-500/10 hover:scale-[1.03] transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+            <div className="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">{t("nav_pronunciation")}</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{t("nav_pronunciation")}</h3>
             <p className="text-sm text-gray-500 mb-4">
               {t("home_pronunciation_desc")}
             </p>
@@ -141,25 +141,25 @@ export default function Home() {
       {/* Stats/Info Section */}
       <section className="max-w-4xl mx-auto px-4 py-12">
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium border border-indigo-100">
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 text-sm font-medium border border-indigo-100 dark:border-indigo-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
             </svg>
             <span className="font-bold">210</span> {t("home_sentences")}
           </span>
-          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-violet-50 text-violet-700 text-sm font-medium border border-violet-100">
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 text-sm font-medium border border-violet-100 dark:border-violet-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
             <span className="font-bold">5</span> {t("home_levels")}
           </span>
-          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-50 text-purple-700 text-sm font-medium border border-purple-100">
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 text-sm font-medium border border-purple-100 dark:border-purple-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
             </svg>
             <span className="font-bold">5</span> {t("home_voices")}
           </span>
-          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-sm font-medium border border-rose-100">
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-sm font-medium border border-rose-100 dark:border-rose-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
             </svg>

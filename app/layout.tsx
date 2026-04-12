@@ -5,14 +5,27 @@ import NavLinks from "@/components/NavLinks";
 import MobileMenu from "@/components/MobileMenu";
 import LanguageSelector from "./components/LanguageSelector";
 import LanguageBadge from "./components/LanguageBadge";
+import ThemeToggle from "./components/ThemeToggle";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Voxify - Master English",
+  title: {
+    default: "Voxify - Master English with AI",
+    template: "%s | Voxify",
+  },
   description:
-    "Master English with AI-powered vocabulary, grammar, dictation, and pronunciation practice",
+    "AI-powered English learning: pronunciation practice, vocabulary, grammar, and dictation with speech recognition and text-to-speech.",
+  icons: {
+    icon: "/favicon.svg",
+  },
+  openGraph: {
+    title: "Voxify - Master English with AI",
+    description:
+      "AI-powered English learning with pronunciation practice, vocabulary building, and real-time speech recognition.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -21,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
         <nav className="relative bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 shadow-lg">
           <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -52,6 +65,7 @@ export default function RootLayout({
             <div className="flex items-center gap-4">
               <NavLinks />
               <LanguageBadge />
+              <ThemeToggle />
               <MobileMenu />
             </div>
           </div>
@@ -63,8 +77,8 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="border-t border-gray-200/60 bg-white/50 backdrop-blur-sm">
-          <div className="max-w-5xl mx-auto px-6 py-4 text-center text-sm text-gray-400">
+        <footer className="border-t border-gray-200/60 dark:border-gray-800/60 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
+          <div className="max-w-5xl mx-auto px-6 py-4 text-center text-sm text-gray-400 dark:text-gray-500">
             Powered by AI
           </div>
         </footer>

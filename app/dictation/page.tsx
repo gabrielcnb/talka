@@ -93,7 +93,7 @@ export default function DictationPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <h1 className="text-3xl font-bold">{t("dictation_title")}</h1>
-      <p className="text-gray-600">
+      <p className="text-gray-600 dark:text-gray-400">
         {t("dictation_desc")}
       </p>
 
@@ -105,7 +105,7 @@ export default function DictationPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedLevel === level
                 ? "bg-purple-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                : "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             }`}
           >
             {level}
@@ -115,14 +115,14 @@ export default function DictationPage() {
 
       <div className="flex items-center gap-4 flex-wrap">
         <div className="flex items-center gap-2">
-          <label htmlFor="voice-select" className="text-sm font-medium text-gray-700">
+          <label htmlFor="voice-select" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {t("dictation_voice")}:
           </label>
           <select
             id="voice-select"
             value={selectedVoice}
             onChange={(e) => setSelectedVoice(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             {voices.map((voice) => (
               <option key={voice} value={voice}>
@@ -140,7 +140,7 @@ export default function DictationPage() {
         </p>
       )}
 
-      <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-4">
         <p className="text-sm text-gray-500">
           Sentence {currentIndex + 1} of {filtered.length}
         </p>
@@ -186,7 +186,7 @@ export default function DictationPage() {
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder={hasPlayed ? "Type what you heard..." : "Click Play to listen first..."}
-          className="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+          className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
           rows={3}
           disabled={showResult}
         />

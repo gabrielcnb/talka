@@ -78,7 +78,7 @@ export default function GrammarPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedLevel === level
                 ? "bg-accent-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                : "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             }`}
           >
             {level === "All" ? t("level_all") : level}
@@ -97,7 +97,7 @@ export default function GrammarPage() {
           return (
             <div
               key={sentence.id}
-              className="bg-white rounded-lg border border-gray-200 p-4 flex items-start justify-between gap-4"
+              className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 flex items-start justify-between gap-4"
             >
               <div className="flex items-start gap-3 flex-1 min-w-0">
                 <button
@@ -113,7 +113,7 @@ export default function GrammarPage() {
                 >
                   {showLoading ? <LoadingSpinner /> : <SpeakerIcon />}
                 </button>
-                <p className="text-gray-800">{sentence.text}</p>
+                <p className="text-gray-800 dark:text-gray-200">{sentence.text}</p>
               </div>
               <span className="text-xs px-2 py-0.5 rounded-full bg-accent-100 text-accent-700 whitespace-nowrap">
                 {sentence.level}

@@ -185,7 +185,7 @@ export default function VocabularyPage() {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedLevel === level
                 ? "bg-primary-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                : "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             }`}
           >
             {level === "All" ? t("level_all") : level}
@@ -199,10 +199,10 @@ export default function VocabularyPage() {
         {filtered.map((word) => (
           <div
             key={word.id}
-            className="bg-white rounded-lg border border-gray-200 p-4 space-y-2"
+            className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 space-y-2"
           >
             <div className="flex items-center gap-3">
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {word.word}
               </span>
               <ListenButton
@@ -218,13 +218,13 @@ export default function VocabularyPage() {
               <span className="text-xs px-2 py-0.5 rounded-full bg-primary-100 text-primary-700">
                 {word.partOfSpeech}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 ml-auto">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 ml-auto">
                 {word.level}
               </span>
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <p className="text-gray-700">{word.definition}</p>
+                <p className="text-gray-700 dark:text-gray-300">{word.definition}</p>
                 {lang !== "en" && (
                   <button
                     type="button"
