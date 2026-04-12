@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Inter } from "next/font/google";
+import NavLinks from "@/components/NavLinks";
+import MobileMenu from "@/components/MobileMenu";
+import LanguageSelector from "./components/LanguageSelector";
+import LanguageBadge from "./components/LanguageBadge";
 import "./globals.css";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
-  title: "English AI - Learn English",
-  description: "Practice English vocabulary, grammar, and dictation",
+  title: "Fluency - Master English",
+  description:
+    "Master English with AI-powered vocabulary, grammar, dictation, and pronunciation practice",
 };
 
 export default function RootLayout({
@@ -13,42 +21,53 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">
-        <nav className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-primary-600">
-              English AI
+    <html lang="en" className={inter.className}>
+      <body className="min-h-screen flex flex-col">
+        <nav className="relative bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 shadow-lg">
+          <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 text-xl font-bold text-white hover:opacity-90 transition-opacity"
+            >
+              {/* Speech bubble / waveform icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-cyan-300"
+              >
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <path d="M8 10h.01" />
+                <path d="M12 10h.01" />
+                <path d="M16 10h.01" />
+              </svg>
+              Fluency
             </Link>
-            <div className="flex gap-6">
-              <Link
-                href="/vocabulary"
-                className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
-              >
-                Vocabulary
-              </Link>
-              <Link
-                href="/grammar"
-                className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
-              >
-                Grammar
-              </Link>
-              <Link
-                href="/dictation"
-                className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
-              >
-                Dictation
-              </Link>
-              <Link
-                href="/pronunciation"
-                className="text-gray-600 hover:text-primary-600 font-medium transition-colors"
-              >
-                Pronunciation
-              </Link>
+            <div className="flex items-center gap-4">
+              <NavLinks />
+              <LanguageBadge />
+              <MobileMenu />
             </div>
           </div>
         </nav>
-        <main className="max-w-5xl mx-auto px-6 py-8">{children}</main>
+
+        <LanguageSelector />
+
+        <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-8">
+          {children}
+        </main>
+
+        <footer className="border-t border-gray-200/60 bg-white/50 backdrop-blur-sm">
+          <div className="max-w-5xl mx-auto px-6 py-4 text-center text-sm text-gray-400">
+            Powered by AI
+          </div>
+        </footer>
       </body>
     </html>
   );
