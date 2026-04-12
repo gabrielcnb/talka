@@ -17,13 +17,9 @@ export default function Home() {
         </div>
 
         <div className="max-w-4xl mx-auto space-y-6">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
             <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
               {t("home_hero_title")}
-            </span>
-            <br />
-            <span className="text-gray-900">
-              {t("home_hero_subtitle")}
             </span>
           </h1>
 
@@ -168,20 +164,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Language Teaser Section */}
-      <section className="max-w-2xl mx-auto px-4 pb-20 text-center">
-        <div className="p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-indigo-50 border border-indigo-100">
-          <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-2">
-            Coming soon
-          </p>
-          <p className="text-xl font-bold text-gray-900 mb-2">
-            Select your native language to get started
-          </p>
-          <p className="text-sm text-gray-500">
-            Get translations, explanations, and tips adapted to your mother tongue.
-          </p>
-        </div>
-      </section>
+      <div className="pb-20" />
     </div>
   );
 }

@@ -73,6 +73,7 @@ export default function LanguageSelector() {
       setLanguage(code);
       setVisible(false);
       setClosing(false);
+      window.location.reload();
     }, 250);
   };
 
