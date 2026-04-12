@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { sentences } from "@/data/sentences";
 import { useTTS } from "@/hooks/useTTS";
 import { useTranslation } from "@/app/i18n/useTranslation";
@@ -19,6 +19,7 @@ export default function DictationPage() {
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   const { speak, stop, isPlaying, isLoading } = useTTS();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const filtered = sentences.filter((s) => s.level === selectedLevel);
   const current = filtered[currentIndex];
@@ -58,6 +59,31 @@ export default function DictationPage() {
     setHasPlayed(false);
     setScore({ correct: 0, total: 0 });
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        const isTextarea = document.activeElement === textareaRef.current;
+        if (showResult) {
+          e.preventDefault();
+          nextSentence();
+        } else if (isTextarea && userInput.trim()) {
+          e.preventDefault();
+          checkAnswer();
+        }
+      }
+
+      if (e.key === " " && document.activeElement !== textareaRef.current) {
+        e.preventDefault();
+        if (!showResult) {
+          playSentence();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showResult, userInput, nextSentence, checkAnswer, playSentence]);
 
   if (!current) return <p>No sentences available.</p>;
 
@@ -105,7 +131,7 @@ export default function DictationPage() {
             ))}
           </select>
         </div>
-        <span className="text-xs text-gray-400">Speed: Normal (1x)</span>
+        <span className="text-xs text-gray-400">{t("dictation_speed")}</span>
       </div>
 
       {score.total > 0 && (
@@ -156,6 +182,7 @@ export default function DictationPage() {
         )}
 
         <textarea
+          ref={textareaRef}
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder={hasPlayed ? "Type what you heard..." : "Click Play to listen first..."}

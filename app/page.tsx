@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "@/app/i18n/useTranslation";
+import ProgressBanner from "@/app/components/ProgressBanner";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -40,6 +41,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Progress Banner */}
+      <ProgressBanner />
 
       {/* Feature Cards */}
       <section className="max-w-6xl mx-auto px-4 py-16">
