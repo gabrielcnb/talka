@@ -21,9 +21,10 @@ export default function WordOfTheDay() {
     if (translation || translating || !language) return;
     setTranslating(true);
     try {
+      const pin = localStorage.getItem("talka_pin") || "";
       const res = await fetch("/api/translate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-app-pin": pin },
         body: JSON.stringify({
           text: `${word.word} — ${word.definition}`,
           targetLang: language,

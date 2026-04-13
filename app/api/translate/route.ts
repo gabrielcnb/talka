@@ -67,8 +67,18 @@ function isAllowedOrigin(origin: string | null): boolean {
 
 const MAX_TEXT_LENGTH = 1000;
 
+const APP_PIN = process.env.APP_PIN;
+
 export async function POST(req: NextRequest) {
   try {
+    // 0. PIN check
+    if (APP_PIN) {
+      const pin = req.headers.get("x-app-pin");
+      if (pin !== APP_PIN) {
+        return NextResponse.json({ error: "PIN required" }, { status: 401 });
+      }
+    }
+
     // 1. Origin / Referer check
     const origin = req.headers.get("origin");
     const referer = req.headers.get("referer");

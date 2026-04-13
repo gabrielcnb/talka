@@ -31,9 +31,10 @@ export function useTTS(): UseTTSReturn {
       setIsLoading(true);
 
       try {
+        const pin = typeof window !== "undefined" ? localStorage.getItem("talka_pin") || "" : "";
         const res = await fetch("/api/tts", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "x-app-pin": pin },
           body: JSON.stringify({ text, voice }),
         });
 
