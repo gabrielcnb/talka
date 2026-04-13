@@ -13,7 +13,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://voxify-sandy.vercel.app'),
+  metadataBase: new URL('https://talka-app.vercel.app'),
   title: {
     default: "Talka - Master English with AI",
     template: "%s | Talka",

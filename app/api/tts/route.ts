@@ -39,7 +39,7 @@ const ALLOWED_VOICES = ["eve", "ara", "rex", "sal", "leo"] as const;
 const DEFAULT_VOICE = "rex";
 
 const ALLOWED_ORIGINS = [
-  "https://voxify-sandy.vercel.app",
+  "https://talka-app.vercel.app",
   process.env.NEXT_PUBLIC_APP_URL,
 ].filter(Boolean) as string[];
 
