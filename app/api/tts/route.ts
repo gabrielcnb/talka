@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkPinAttempt, recordFailedPin, clearFailedPin } from "@/app/lib/pin-guard";
 
 // --- Rate Limiter ---
 const RATE_LIMIT = 30;
@@ -52,12 +53,27 @@ function isAllowedOrigin(origin: string | null): boolean {
 const APP_PIN = process.env.APP_PIN;
 
 export async function POST(req: NextRequest) {
-  // 0. PIN check
+  // 0. PIN check with lockout
+  const ip =
+    req.ip ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown";
+
   if (APP_PIN) {
+    const attempt = checkPinAttempt(ip);
+    if (!attempt.allowed) {
+      return NextResponse.json(
+        { error: "Too many failed PIN attempts. Try again later." },
+        { status: 429, headers: { "Retry-After": String(attempt.retryAfter) } }
+      );
+    }
+
     const pin = req.headers.get("x-app-pin");
     if (pin !== APP_PIN) {
+      recordFailedPin(ip);
       return NextResponse.json({ error: "PIN required" }, { status: 401 });
     }
+    clearFailedPin(ip);
   }
 
   // 1. Origin / Referer check
@@ -70,10 +86,6 @@ export async function POST(req: NextRequest) {
   }
 
   // 2. Rate limiting
-  const ip =
-    req.ip ||
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    "unknown";
 
   const { allowed } = getRateLimitResult(ip);
   if (!allowed) {
