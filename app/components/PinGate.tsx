@@ -8,16 +8,20 @@ export default function PinGate({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
+  // PIN fixo de acesso. Lembrar via localStorage só revalida contra o PIN
+  // correto (antes qualquer valor guardado destravava).
+  const PIN = "REDACTED";
+
   useEffect(() => {
     const stored = localStorage.getItem("talka_pin");
-    if (stored) setUnlocked(true);
+    if (stored === PIN) setUnlocked(true);
     setHydrated(true);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin.trim()) {
-      localStorage.setItem("talka_pin", pin.trim());
+    if (pin.trim() === PIN) {
+      localStorage.setItem("talka_pin", PIN);
       setUnlocked(true);
       setError(false);
     } else {
@@ -56,7 +60,7 @@ export default function PinGate({ children }: { children: React.ReactNode }) {
                 error ? "border-red-400" : "border-gray-200 dark:border-gray-700"
               } bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-500 transition-colors`}
             />
-            {error && <p className="text-sm text-red-500 text-center">Enter a valid PIN</p>}
+            {error && <p className="text-sm text-red-500 text-center">Incorrect PIN</p>}
             <button
               type="submit"
               className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-indigo-500/30 transition-all"
