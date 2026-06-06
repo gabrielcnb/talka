@@ -8,7 +8,6 @@ import LanguageBadge from "./components/LanguageBadge";
 import ThemeToggle from "./components/ThemeToggle";
 import XPBar from "./components/XPBar";
 import LevelUpCelebration from "./components/LevelUpCelebration";
-import PinGate from "./components/PinGate";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,7 +47,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
-        <PinGate>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:outline-none">
           Skip to content
         </a>
@@ -122,7 +120,6 @@ export default function RootLayout({
             Powered by AI
           </div>
         </footer>
-        </PinGate>
       </body>
     </html>
   );
