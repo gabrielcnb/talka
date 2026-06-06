@@ -2,9 +2,7 @@
 
 Interactive English learning app — vocabulary, grammar exercises and dictation practice (Next.js + Tailwind).
 
-Live at [talka-app.vercel.app](https://talka-app.vercel.app)
-
-![Talka Screenshot](./screenshot.png)
+Live at [talka.vercel.app](https://talka.vercel.app)
 
 ## Features
 

@@ -56,7 +56,7 @@ const ALLOWED_LANGS: Record<string, string> = {
 };
 
 const ALLOWED_ORIGINS = [
-  "https://talka-app.vercel.app",
+  "https://talka.vercel.app",
   process.env.NEXT_PUBLIC_APP_URL,
 ].filter(Boolean) as string[];
 
