@@ -1,28 +1,28 @@
 # Talka
 
-Interactive English learning app — vocabulary, grammar exercises and dictation practice (Next.js + Tailwind).
+Interactive English learning app: vocabulary, grammar exercises and dictation practice (Next.js + Tailwind).
 
 Live at [talka.vercel.app](https://talka.vercel.app)
 
 ## Features
 
-- **Vocabulary Browser** — 200+ words organized by CEFR level (A1-C1) with phonetics, definitions, and example sentences
-- **Flashcards** — spaced-repetition style cards with "Known / Review" tracking (persisted in localStorage)
-- **Grammar Exercises** — fill-in-the-blank exercises generated from sentence data with shuffled options
-- **Dictation** — listen to AI-generated speech and type what you hear, with word-level diff feedback
-- **Pronunciation Practice** — listen to a sentence, record yourself via Web Speech API, and compare word-by-word
-- **Quiz Mode** — multiple-choice vocabulary quizzes filtered by level
-- **Text-to-Speech** — five AI voices (eve, ara, rex, sal, leo) powered by xAI TTS API
-- **Speech Recognition** — browser-native Web Speech API for pronunciation comparison
-- **Instant Translation** — translate definitions and examples into 16 languages via xAI Grok API
-- **XP & Leveling** — earn XP for every activity with 10 progression levels (Beginner to Legend)
-- **Daily Streak** — tracks consecutive practice days with a visual streak badge
-- **Progress Tracking** — per-module completion stats stored locally
-- **Dark Mode** — system-aware theme toggle
-- **i18n UI** — interface available in English, Portuguese, Spanish, and more
-- **PWA-ready** — includes web manifest for installable app experience
-- **PIN Protection** — optional PIN gate to restrict access
-- **Word of the Day** — daily highlighted word on the home page
+- **Vocabulary Browser**: 200+ words organized by CEFR level (A1-C1) with phonetics, definitions, and example sentences
+- **Flashcards**: spaced-repetition style cards with "Known / Review" tracking (persisted in localStorage)
+- **Grammar Exercises**: fill-in-the-blank exercises generated from sentence data with shuffled options
+- **Dictation**: listen to AI-generated speech and type what you hear, with word-level diff feedback
+- **Pronunciation Practice**: listen to a sentence, record yourself via Web Speech API, and compare word-by-word
+- **Quiz Mode**: multiple-choice vocabulary quizzes filtered by level
+- **Text-to-Speech**: five AI voices (eve, ara, rex, sal, leo) powered by xAI TTS API
+- **Speech Recognition**: browser-native Web Speech API for pronunciation comparison
+- **Instant Translation**: translate definitions and examples into 16 languages via xAI Grok API
+- **XP & Leveling**: earn XP for every activity with 10 progression levels (Beginner to Legend)
+- **Daily Streak**: tracks consecutive practice days with a visual streak badge
+- **Progress Tracking**: per-module completion stats stored locally
+- **Dark Mode**: system-aware theme toggle
+- **i18n UI**: interface available in English, Portuguese, Spanish, and more
+- **PWA-ready**: includes web manifest for installable app experience
+- **PIN Protection**: optional PIN gate to restrict access
+- **Word of the Day**: daily highlighted word on the home page
 
 ## Tech Stack
 
@@ -30,8 +30,8 @@ Live at [talka.vercel.app](https://talka.vercel.app)
 - [React 18](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS 3](https://tailwindcss.com/)
-- [xAI API](https://x.ai/) — TTS (text-to-speech) and translation (Grok)
-- Web Speech API — browser-native speech recognition
+- [xAI API](https://x.ai/) for TTS (text-to-speech) and translation (Grok)
+- Web Speech API for browser-native speech recognition
 
 ## Getting Started
 
